@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mysql:*)",
+      "Bash(python3 -c \"import mysql.connector; print\\(''mysql-connector available''\\)\")",
+      "Bash(python -c \"import mysql.connector; print\\(''mysql-connector available''\\)\")",
+      "Bash(pip install:*)",
+      "Bash(python3:*)",
+      "Bash(npx create-next-app@14 frontend --typescript --tailwind --eslint --app --no-src-dir --import-alias \"@/*\" --yes)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)",
+      "Bash(python -c \"import json; nb = json.load\\(open\\(''notebooks/hospital_analysis.ipynb''\\)\\); print\\(f''Total cells: {len\\(nb[\"\"cells\"\"]\\)}''\\); [print\\(f''Cell {i}: {c[\"\"cell_type\"\"]} - {str\\(c[\"\"source\"\"]\\)[:80]}''\\) for i, c in enumerate\\(nb[''cells'']\\)]\")",
+      "Bash(python -c \":*)"
+    ]
+  }
+}
