@@ -29,15 +29,19 @@ export default function OverviewPage() {
         {kpi.loading ? <LoadingSpinner label="Loading KPIs..." /> : kpi.error ? <ErrorMessage message={kpi.error} /> : kpi.data && (
           <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
             <KpiCard title="Total Patients" value={kpi.data.total_patients} icon={Users} color="blue"
-              subtitle={`${kpi.data.total_encounters.toLocaleString()} encounters`} />
+              subtitle={`${kpi.data.total_encounters.toLocaleString()} encounters`}
+              changePct={kpi.data.yoy?.encounters_pct} higherIsBetter changeLabel="encounters vs prior year" />
             <KpiCard title="Avg LOS" value={kpi.data.avg_los_hours} suffix="h" decimals={1} icon={Clock} color="green"
               subtitle={`Inpatient: ${kpi.data.avg_los_days_inpatient.toFixed(1)} days`} />
             <KpiCard title="Avg Cost" value={kpi.data.avg_cost} prefix="$" decimals={0} icon={DollarSign} color="yellow"
-              subtitle={`Median: $${kpi.data.median_cost.toFixed(0)}`} />
+              subtitle={`Median: $${kpi.data.median_cost.toFixed(0)}`}
+              changePct={kpi.data.yoy?.avg_cost_pct} higherIsBetter={false} changeLabel="avg cost vs prior year" />
             <KpiCard title="Readmission Rate" value={kpi.data.readmission_rate_30d * 100} suffix="%" decimals={1} icon={RefreshCw} color="red"
-              subtitle="30-day readmission" />
+              subtitle="30-day readmission"
+              changePct={kpi.data.yoy?.readmission_rate_pct} higherIsBetter={false} changeLabel="readmission rate vs prior year" />
             <KpiCard title="Insurance Coverage" value={kpi.data.insurance_coverage_rate * 100} suffix="%" decimals={1} icon={Shield} color="purple"
-              subtitle={`Avg OOP: $${kpi.data.avg_out_of_pocket.toFixed(0)}`} />
+              subtitle={`Avg OOP: $${kpi.data.avg_out_of_pocket.toFixed(0)}`}
+              changePct={kpi.data.yoy?.coverage_rate_pct} higherIsBetter changeLabel="coverage rate vs prior year" />
           </div>
         )}
 

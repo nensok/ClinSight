@@ -1,4 +1,11 @@
 // ─── KPI Summary ────────────────────────────────────────────────────────────
+export interface KpiYoY {
+  encounters_pct: number;
+  avg_cost_pct: number;
+  readmission_rate_pct: number;
+  coverage_rate_pct: number;
+}
+
 export interface KpiSummary {
   total_patients: number;
   total_encounters: number;
@@ -14,6 +21,7 @@ export interface KpiSummary {
   insurance_coverage_rate: number;
   avg_out_of_pocket: number;
   date_range: { start: string; end: string };
+  yoy?: KpiYoY;
 }
 
 // ─── Admissions Trend ───────────────────────────────────────────────────────
@@ -134,6 +142,7 @@ export interface RiskPatient {
   insurance_covered: boolean;
   risk_score: number;
   reason: string;
+  contributions?: Record<string, number>;  // feature contribution scores 0-1
 }
 
 export interface RiskPatientsResponse {

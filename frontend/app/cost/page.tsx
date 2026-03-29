@@ -6,6 +6,7 @@ import { TopBar } from "@/components/layout/TopBar";
 import { CostDistributionChart } from "@/components/charts/CostDistributionChart";
 import { BreakdownBarChart } from "@/components/charts/BreakdownBarChart";
 import { ExportButton } from "@/components/ui/ExportButton";
+import { DrillDownSheet } from "@/components/ui/DrillDownSheet";
 import { LoadingSpinner } from "@/components/ui/LoadingSpinner";
 import { ErrorMessage } from "@/components/ui/ErrorMessage";
 import { fmtCurrency } from "@/lib/utils";
@@ -19,6 +20,7 @@ type GroupBy = "encounter_class" | "payer" | "procedure";
 
 export default function CostPage() {
   const [groupBy, setGroupBy] = useState<GroupBy>("encounter_class");
+  const [drillLabel, setDrillLabel] = useState<string | null>(null);
 
   const { data, loading, error } = useApi(
     () => fetchCost({ group_by: groupBy }),
@@ -77,6 +79,7 @@ export default function CostPage() {
                 title={`Avg Cost by ${groupBy.replace("_", " ")}`}
                 formatter={(v) => fmtCurrency(v)}
                 color="#f59e0b"
+                onBarClick={groupBy === "encounter_class" ? setDrillLabel : undefined}
               />
             </div>
 
@@ -103,6 +106,21 @@ export default function CostPage() {
                         <TableCell className="text-muted-foreground text-sm">{p.count.toLocaleString()}</TableCell>
                       </TableRow>
                     ))}
+                    {data.top_procedures.length > 0 && (() => {
+                      const totals = data.top_procedures.reduce(
+                        (acc, p) => ({ total_cost: acc.total_cost + p.total_cost, count: acc.count + p.count }),
+                        { total_cost: 0, count: 0 }
+                      );
+                      return (
+                        <TableRow className="border-t-2 font-semibold bg-muted/40">
+                          <TableCell className="text-sm">Total (top {data.top_procedures.length})</TableCell>
+                          <TableCell />
+                          <TableCell />
+                          <TableCell className="text-sm">{fmtCurrency(totals.total_cost)}</TableCell>
+                          <TableCell className="text-sm">{totals.count.toLocaleString()}</TableCell>
+                        </TableRow>
+                      );
+                    })()}
                   </TableBody>
                 </Table>
               </CardContent>
@@ -110,6 +128,13 @@ export default function CostPage() {
           </>
         )}
       </div>
+
+      <DrillDownSheet
+        open={!!drillLabel}
+        onClose={() => setDrillLabel(null)}
+        filterLabel={drillLabel ?? ""}
+        filterKey="encounter_class"
+      />
     </>
   );
 }

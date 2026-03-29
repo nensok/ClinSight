@@ -22,6 +22,8 @@ export default function RiskPage() {
   const [ageGroup, setAgeGroup] = useState("");
   const [encounterClass, setEncounterClass] = useState("");
   const [minRisk, setMinRisk] = useState(0);
+  const [sortBy, setSortBy] = useState("risk_score");
+  const [order, setOrder] = useState<"asc" | "desc">("desc");
   const LIMIT = 25;
 
   const { data, loading, error } = useApi(
@@ -31,11 +33,21 @@ export default function RiskPage() {
       min_risk: minRisk,
       age_group: ageGroup || undefined,
       encounter_class: encounterClass || undefined,
-      sort_by: "risk_score",
-      order: "desc",
+      sort_by: sortBy,
+      order,
     }),
-    [offset, ageGroup, encounterClass, minRisk]
+    [offset, ageGroup, encounterClass, minRisk, sortBy, order]
   );
+
+  function handleSort(col: string) {
+    if (col === sortBy) {
+      setOrder((prev) => (prev === "desc" ? "asc" : "desc"));
+    } else {
+      setSortBy(col);
+      setOrder("desc");
+    }
+    setOffset(0);
+  }
 
   function resetOffset() {
     setOffset(0);
@@ -100,6 +112,9 @@ export default function RiskPage() {
             offset={offset}
             limit={LIMIT}
             onPageChange={setOffset}
+            sortBy={sortBy}
+            order={order}
+            onSort={handleSort}
           />
         )}
       </div>

@@ -4,8 +4,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from .routers import admissions, los, cost, insurance, kpi, risk
 
 app = FastAPI(
-    title="Hospital Analytics API",
-    description="Aggregated analytics endpoints for the Hospital Patient Analytics dashboard.",
+    title="ClinSight Analytics API",
+    description="Aggregated analytics endpoints for the ClinSight Patient Analytics dashboard.",
     version="1.0.0",
 )
 
